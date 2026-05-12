@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; width: 85%; max-width: 400px; }
+        .emissao { font-size: 2.5rem; color: #e74c3c; font-weight: bold; margin: 15px 0; }
+        .tag { background: #eee; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; color: #666; }
+        .btn { display: inline-block; margin-top: 25px; color: #27ae60; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <span class="tag" id="veiculoTag">Veículo</span>
+    <h2 style="margin: 10px 0 5px 0;">Impacto Estimado</h2>
+    <p id="trajeto" style="color: #7f8c8d; font-size: 0.9rem;"></p>
+    
+    <div class="emissao" id="resultado">0 kg</div>
+    <p style="color: #95a5a6;">de CO₂ emitidos</p>
+    
+    <p id="obs" style="font-size: 0.85rem; color: #34495e; background: #f9f9f9; padding: 10px; border-radius: 10px;"></p>
+    
+    <a href="index.html" class="btn">Fazer novo cálculo</a>
+</div>
+
+<script>
+    const dados = JSON.parse(localStorage.getItem('dadosViagem'));
+    
+    if (dados) {
+        const total = (parseFloat(dados.distancia) * parseFloat(dados.fator)).toFixed(2);
+        
+        document.getElementById('veiculoTag').innerText = dados.veiculo;
+        document.getElementById('trajeto').innerText = `${dados.origem} → ${dados.destino}`;
+        document.getElementById('resultado').innerText = `${total} kg`;
+        
+        let msg = "";
+        if(dados.veiculo === "Moto") msg = "Motos são mais ágeis e emitem menos por km individualmente.";
+        if(dados.veiculo === "Onibus") msg = "Apesar do valor alto, se dividido por 40 passageiros, é a opção mais ecológica!";
+        if(dados.veiculo === "Caminhao") msg = "Caminhões possuem alto impacto devido ao peso e combustível diesel.";
+        if(dados.veiculo === "Carro") msg = "Um carro médio emite cerca de 120g de CO2 a cada quilômetro rodado.";
+        
+        document.getElementById('obs').innerText = msg;
+    } else {
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>
