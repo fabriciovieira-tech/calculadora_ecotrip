@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de CO2</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --bg: #f0f2f5;
+        }
+
+        body { font-family: sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 450px; }
+        
+        h1 { text-align: center; color: #27ae60; font-size: 1.4rem; }
+        
+        .vehicle-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .vehicle-option {
+            border: 2px solid #eee;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fff;
+        }
+
+        .vehicle-option:hover { border-color: var(--primary); }
+        
+        /* Estilo para o botão selecionado */
+        .vehicle-option.selected {
+            background: #eafff2;
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .vehicle-option span { display: block; font-size: 1.2rem; margin-bottom: 5px; }
+        .vehicle-option label { cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        
+        button#calcBtn {
+            width: 100%; background: var(--primary); color: white; padding: 15px;
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Calculadora de Emissão</h1>
+    
+    <div class="vehicle-selector" id="selector">
+        <div class="vehicle-option" onclick="selectVehicle('carro', 0.12, this)">
+            <span>🚗</span><label>Carro</label>
+        </div>
+        <div class="vehicle-option" onclick="selectVehicle('moto', 0.05, this)">
+            <span>🏍️</span><label>Moto</label>
+        </div>
+        <div class="vehicle-option" onclick="selectVehicle('onibus', 0.8, this)">
+            <span>🚌</span><label>Ônibus</label>
+        </div>
+        <div class="vehicle-option" onclick="selectVehicle('caminhao', 1.2, this)">
+            <span>🚛</span><label>Caminhão</label>
+        </div>
+    </div>
+
+    <form id="co2Form">
+        <input type="hidden" id="fatorEmissao" value="0.12">
+        <input type="hidden" id="veiculoNome" value="Carro">
+
+        <div class="form-group"><input type="text" id="origem" placeholder="Origem" required></div>
+        <div class="form-group"><input type="text" id="destino" placeholder="Destino" required></div>
+        <div class="form-group"><input type="number" id="distancia" placeholder="Distância (km)" required></div>
+        
+        <button type="submit" id="calcBtn">Calcular Resultado</button>
+    </form>
+</div>
+
+<script>
+    function selectVehicle(tipo, fator, element) {
+        // Remove seleção de todos
+        document.querySelectorAll('.vehicle-option').forEach(opt => opt.classList.remove('selected'));
+        // Adiciona ao selecionado
+        element.classList.add('selected');
+        // Salva os valores nos campos ocultos
+        document.getElementById('fatorEmissao').value = fator;
+        document.getElementById('veiculoNome').value = tipo.charAt(0).toUpperCase() + tipo.slice(1);
+    }
+
+    // Seleciona 'carro' por padrão ao carregar
+    window.onload = () => {
+        const primeiraOpcao = document.querySelector('.vehicle-option');
+        selectVehicle('carro', 0.12, primeiraOpcao);
+    };
+
+    document.getElementById('co2Form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const dados = {
+            origem: document.getElementById('origem').value,
+            destino: document.getElementById('destino').value,
+            distancia: document.getElementById('distancia').value,
+            fator: document.getElementById('fatorEmissao').value,
+            veiculo: document.getElementById('veiculoNome').value
+        };
+        localStorage.setItem('dadosViagem', JSON.stringify(dados));
+        window.location.href = 'resultado.html';
+    });
+</script>
+</body>
+</html>
