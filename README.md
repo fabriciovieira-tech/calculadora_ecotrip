@@ -37,5 +37,5 @@ O sistema utiliza coeficientes específicos para calcular a liberação de CO₂
 ## 💡 Diferenciais do Projeto
 
 *   **Fidelidade ao Design:** Tradução fiel dos protótipos do Figma para o código real, garantindo uma interface moderna e limpa.
-*   **Lógica Dinâmica:** O JavaScript aplica um "fator de poluição" variável de acordo com o modal escolhido, garantindo precisão na simulação.
+*   **Lógica Dinâmica:** O JavaScript aplica um "fator de poluição de ar" variável de acordo com o modal escolhido, garantindo precisão na simulação.
 *   **Feedback Contextual:** A página de resultados exibe mensagens personalizadas, permitindo que o usuário compreenda a magnitude da sua pegada de carbono conforme o veículo utilizado.
